@@ -53,15 +53,15 @@
 // ---- Stuff to configure ----
 
 // Initialize Wifi connection to the router
-char ssid[] = "SSID";     // your network SSID (name)
-char password[] = "password"; // your network key
+char ssid[] = "BeneGesserit_IoT";     // your network SSID (name)
+char password[] = ""; // your network key
 
 // Set a timezone using the following list
 // https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-#define MYTIMEZONE "Europe/Dublin"
+#define MYTIMEZONE "Europe/Berlin"
 
 // Sets whether the clock should be 12 hour format or not.
-bool twelveHourFormat = true;
+bool twelveHourFormat = false;
 
 // If this is set to false, the number will only change if the value behind it changes
 // e.g. the digit representing the least significant minute will be replaced every minute,
@@ -77,9 +77,9 @@ bool forceRefresh = true;
 #define P_C 18
 #define P_D 5
 #define P_E 15
-#define P_OE 26 //TinyPICO
+//#define P_OE 26 //TinyPICO
 //#define P_OE 21 //Huzzah32
-//#define P_OE 2 // Generic ESP32
+#define P_OE 2 // Generic ESP32
 // ---------------------
 
 portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
@@ -214,8 +214,9 @@ void setup() {
   // as it will crash!
 
   // Intialise display library
-  display.begin(16, SPI_BUS_CLK, 27, SPI_BUS_MISO, SPI_BUS_SS); // TinyPICO
-  //display.begin(16); // Generic ESP32 including Huzzah
+  //display.begin(16, SPI_BUS_CLK, 27, SPI_BUS_MISO, SPI_BUS_SS); // TinyPICO
+  display.begin(16); // Generic ESP32 including Huzzah
+  display.setMuxDelay(1,1,1,1,1);
   display.flushDisplay();
 
   // Setup timer for driving display
@@ -253,14 +254,14 @@ void setup() {
   display.clearDisplay();
 #endif
   // "Powered By"
-  drawIntro(6, 12);
+  //drawIntro(6, 12);
 #ifdef double_buffer
   display.showBuffer();
 #endif
   delay(2000);
 
   // Start the Animation Timer
-  tetris.setText("TINY PICO");
+  //tetris.setText("TINY PICO");
   animationTimer = timerBegin(1, 80, true);
   timerAttachInterrupt(animationTimer, &animationHandler, true);
   timerAlarmWrite(animationTimer, 100000, true);
